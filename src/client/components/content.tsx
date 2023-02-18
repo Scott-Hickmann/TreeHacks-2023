@@ -108,6 +108,7 @@ export function Content({ content: MDXComponent }: ContentProps) {
               width={{ base: 'full', lg: width }}
               textAlign={{ base: 'center', lg: 'left' }}
               fontSize="sm"
+              marginTop={{ base: 0, lg: 1.5 }}
             >
               <Image src={src} alt={alt} />
               <Stack spacing={0}>
@@ -118,7 +119,7 @@ export function Content({ content: MDXComponent }: ContentProps) {
                     {source}
                   </Text>
                 )}
-                <Button size="sm" variant="outline" ml="auto">
+                <Button size="sm" variant="outline">
                   Talk with me
                 </Button>{' '}
                 {/* TODO scott pls implement :3 */}
@@ -130,5 +131,4 @@ export function Content({ content: MDXComponent }: ContentProps) {
       />
     </Box>
   );
- 
 }
