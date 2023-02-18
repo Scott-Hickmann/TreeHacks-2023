@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Heading,
   Image,
   Input,
   Modal,
@@ -12,8 +13,7 @@ import {
   ModalOverlay,
   Stack,
   Text,
-  useColorModeValue,
-  VStack
+  useColorModeValue
 } from '@chakra-ui/react';
 import { Fragment, useEffect, useRef, useState } from 'react';
 
@@ -142,11 +142,13 @@ export function Speaker({
       size="4xl"
     >
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>{name}</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody overflow="hidden" display="flex" flexDirection="column">
-          <VStack overflow="hidden" display="flex" flexDirection="column">
+      <ModalContent height="full">
+        <ModalHeader
+          borderBottomWidth={1}
+          borderColor={useColorModeValue('gray.200', 'gray.600')}
+        >
+          <Stack>
+            <Heading size="md">{name}</Heading>
             <Image
               src={isRunning ? speakingSrc : profileSrc}
               alt="Rachel Carson"
@@ -156,17 +158,21 @@ export function Speaker({
               objectFit="cover"
               objectPosition="top"
               borderRadius="full"
+              alignSelf="center"
             />
-            <Stack spacing={8} width="full" overflow="auto">
-              {conversation.map(({ user, bot }, index) => (
-                <Fragment key={index}>
-                  <DialogPart name="Me" sentences={user} />
-                  <DialogPart name={name} sentences={bot} />
-                </Fragment>
-              ))}
-              <Box ref={scrollable} />
-            </Stack>
-          </VStack>
+          </Stack>
+        </ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <Stack spacing={8} py={4} width="full" overflow="auto">
+            {conversation.map(({ user, bot }, index) => (
+              <Fragment key={index}>
+                <DialogPart name="Me" sentences={user} />
+                <DialogPart name={name} sentences={bot} />
+              </Fragment>
+            ))}
+          </Stack>
+          <Box ref={scrollable} />
         </ModalBody>
         <ModalFooter
           py={6}
