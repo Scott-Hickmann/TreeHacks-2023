@@ -1,16 +1,19 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { mode, StyleFunctionProps } from '@chakra-ui/theme-tools';
-import { Inter, Montserrat } from '@next/font/google';
+import { Rufina, Montserrat } from '@next/font/google';
 import { trpc } from 'client/trpc';
 import type { AppProps } from 'next/app';
 
-const inter = Inter({ subsets: ['latin'] });
+const rufina = Rufina({
+  subsets: ['latin'],
+  weight: '400'
+});
 const montserrat = Montserrat({ weight: '400', subsets: ['latin'] });
 
 const theme = extendTheme({
   fonts: {
-    heading: inter.style.fontFamily,
-    body: inter.style.fontFamily,
+    heading: rufina.style.fontFamily,
+    body: rufina.style.fontFamily,
     article: montserrat.style.fontFamily
   },
   styles: {

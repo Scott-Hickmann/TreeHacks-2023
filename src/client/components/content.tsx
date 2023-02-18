@@ -68,7 +68,7 @@ const components: MDXComponents = {
 
 export function Content({ content: MDXComponent }: ContentProps) {
   return (
-    <Box textAlign="justify" margin="auto" maxW="80ch">
+    <Box textAlign="left" margin="auto" maxW="80ch">
       <MDXComponent
         components={{
           ...components,
