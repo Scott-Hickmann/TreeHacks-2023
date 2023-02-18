@@ -1,14 +1,11 @@
-import { Heading } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { Content } from 'client/components/content';
-import Napoleon from 'common/content/napoleon.mdx';
+import RachelCarson from 'common/content/rachelCarson.mdx';
 
 export default function HomePage() {
   return (
-    <>
-      <Heading as="h1" size="2xl">
-        Hello, TreeHacks!
-      </Heading>
-      <Content content={Napoleon} />
-    </>
+    <Box p={{ base: 6, md: 8 }}>
+      <Content content={RachelCarson} />
+    </Box>
   );
 }

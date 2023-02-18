@@ -1,9 +1,17 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { mode, StyleFunctionProps } from '@chakra-ui/theme-tools';
+import { Inter, Source_Serif_Pro } from '@next/font/google';
 import { trpc } from 'client/trpc';
 import type { AppProps } from 'next/app';
 
+const inter = Inter({ subsets: ['latin'] });
+const sourceSerifPro = Source_Serif_Pro({ weight: '400', subsets: ['latin'] });
+
 const theme = extendTheme({
+  fonts: {
+    heading: inter.style.fontFamily,
+    body: sourceSerifPro.style.fontFamily
+  },
   styles: {
     global: (props: StyleFunctionProps) => ({
       body: {
