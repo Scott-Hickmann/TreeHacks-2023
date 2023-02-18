@@ -30,7 +30,7 @@ export default function Navigation(): ReactElement {
           justify="space-between"
           width="full"
         >
-          <Heading>TreeHacks 2023</Heading>
+          <Heading>Talk to History.</Heading>
           <Button aria-label="Toggle color mode" onClick={toggleColorMode}>
             {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
           </Button>

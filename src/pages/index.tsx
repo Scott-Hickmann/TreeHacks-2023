@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react';
 import { Content } from 'client/components/content';
 import Layout from 'client/components/layout';
 import RachelCarson from 'common/content/rachelCarson.mdx';
+import Diogenes from 'common/content/diogenes.mdx';
 
 export default function HomePage() {
   return (

@@ -68,7 +68,8 @@ const components: MDXComponents = {
 
 export function Content({ content: MDXComponent }: ContentProps) {
   return (
-    <Box textAlign="justify">
+    <Box textAlign="justify" maxW="80ch" margin="auto">
+      {/* sus */}
       <MDXComponent
         components={{
           ...components,
@@ -89,7 +90,11 @@ export function Content({ content: MDXComponent }: ContentProps) {
               <Stack spacing={0}>
                 <Box />
                 {children}
-                {source && <Text fontStyle="italic">{source}</Text>}
+                {source && (
+                  <Text fontStyle="italic" fontFamily="article">
+                    {source}
+                  </Text>
+                )}
               </Stack>
             </Stack>
           ),
