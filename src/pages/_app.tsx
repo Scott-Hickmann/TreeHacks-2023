@@ -51,10 +51,10 @@ const theme = extendTheme({
   }
 });
 
-function App({ Component, ...rest }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider resetCSS theme={theme}>
-      <Component {...rest} />
+      <Component {...pageProps} />
     </ChakraProvider>
   );
 }
