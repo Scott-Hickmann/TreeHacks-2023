@@ -68,7 +68,7 @@ const components: MDXComponents = {
 
 export function Content({ content: MDXComponent }: ContentProps) {
   return (
-    <Box textAlign="justify">
+    <Box textAlign="justify" margin="auto" maxW="80ch">
       <MDXComponent
         components={{
           ...components,
@@ -89,7 +89,39 @@ export function Content({ content: MDXComponent }: ContentProps) {
               <Stack spacing={0}>
                 <Box />
                 {children}
-                {source && <Text fontStyle="italic">{source}</Text>}
+                {source && (
+                  <Text fontStyle="italic" fontFamily="article">
+                    {source}
+                  </Text>
+                )}
+              </Stack>
+            </Stack>
+          ),
+          SpeakerImage: ({ src, alt, float, width, children, source }) => (
+            <Stack
+              pb={imagePadding}
+              pl={float === 'right' ? { ...imagePadding, base: 0 } : 0}
+              pr={float === 'left' ? { ...imagePadding, base: 0 } : 0}
+              margin="auto"
+              mt={commonHeadingProps.mt}
+              float={{ base: 'none', lg: float }}
+              width={{ base: 'full', lg: width }}
+              textAlign={{ base: 'center', lg: 'left' }}
+              fontSize="sm"
+            >
+              <Image src={src} alt={alt} />
+              <Stack spacing={0}>
+                <Box />
+                {children}
+                {source && (
+                  <Text fontStyle="italic" fontFamily="article">
+                    {source}
+                  </Text>
+                )}
+                <Button size="sm" variant="outline" ml="auto">
+                  Talk with me
+                </Button>{' '}
+                {/* TODO scott pls implement :3 */}
               </Stack>
             </Stack>
           ),
