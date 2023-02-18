@@ -23,7 +23,6 @@
     "@trpc/next": "^10.11.1",
     "@trpc/react-query": "^10.11.1",
     "@trpc/server": "^10.11.1",
-    "chatgpt": "^4.4.1",
     "framer-motion": "^9.0.4",
     "nanoid": "^4.0.1",
     "next": "^13.1.6",
