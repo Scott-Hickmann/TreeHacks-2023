@@ -10,7 +10,8 @@ const sourceSerifPro = Source_Serif_Pro({ weight: '400', subsets: ['latin'] });
 const theme = extendTheme({
   fonts: {
     heading: inter.style.fontFamily,
-    body: sourceSerifPro.style.fontFamily
+    body: inter.style.fontFamily,
+    article: sourceSerifPro.style.fontFamily
   },
   styles: {
     global: (props: StyleFunctionProps) => ({
