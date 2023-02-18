@@ -4,7 +4,7 @@ import RachelCarson from 'common/content/rachelCarson.mdx';
 
 export default function HomePage() {
   return (
-    <Box p={{ base: 6, md: 8 }}>
+    <Box m={{ base: 6, md: 8 }}>
       <Content content={RachelCarson} />
     </Box>
   );

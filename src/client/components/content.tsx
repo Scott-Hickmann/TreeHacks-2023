@@ -1,11 +1,20 @@
-import { Button, Heading, Link, Stack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Heading,
+  Image,
+  Link,
+  Stack,
+  Text
+} from '@chakra-ui/react';
 import { MDXComponents, MDXContent } from 'mdx/types.js';
 
 export interface ContentProps {
   content: MDXContent;
 }
 
-const commonHeadingProps = { pt: 4 } as const;
+const commonHeadingProps = { mt: 6, mb: 4 } as const;
+const imagePadding = { base: 4, lg: 6 } as const;
 
 const components: MDXComponents = {
   h1: ({ children }) => (
@@ -38,6 +47,12 @@ const components: MDXComponents = {
       {children}
     </Heading>
   ),
+  p: ({ children }) => <Text mt={4}>{children}</Text>,
+  blockquote: ({ children }) => (
+    <Text fontSize="xl" mt={4}>
+      {children}
+    </Text>
+  ),
   a: ({ children, ...props }) => (
     <Link color="blue.500" {...props} target="_blank">
       {children}
@@ -47,13 +62,33 @@ const components: MDXComponents = {
 
 export function Content({ content: MDXComponent }: ContentProps) {
   return (
-    <Stack spacing={4}>
+    <Box textAlign="justify">
       <MDXComponent
         components={{
           ...components,
-          Button: ({ children }) => <Button>{children}</Button>
+          Button: ({ children }) => <Button>{children}</Button>,
+          Image: ({ src, alt, float, width, children, source }) => (
+            <Stack
+              pb={imagePadding}
+              pl={float === 'right' ? { ...imagePadding, base: 0 } : 0}
+              pr={float === 'left' ? { ...imagePadding, base: 0 } : 0}
+              margin="auto"
+              mt={commonHeadingProps.mt}
+              float={{ base: 'none', lg: float }}
+              width={{ base: 'full', lg: width }}
+              textAlign={{ base: 'center', lg: 'left' }}
+              fontSize="sm"
+            >
+              <Image src={src} alt={alt} />
+              <Stack spacing={0}>
+                <Box />
+                {children}
+                {source && <Text fontStyle="italic">{source}</Text>}
+              </Stack>
+            </Stack>
+          )
         }}
       />
-    </Stack>
+    </Box>
   );
 }
