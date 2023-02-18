@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { MDXComponents, MDXContent } from 'mdx/types.js';
 import { createContext, useContext } from 'react';
+import Tilt from 'react-parallax-tilt';
 
 import { Speaker } from './speaker';
 
@@ -125,10 +126,10 @@ const components: MDXComponents = {
       </Stack>
     );
   },
-  Speaker: ({ name }) => {
+  Speaker: (props) => {
     const { disclosure } = useContext(Context);
     const { isOpen, onClose } = disclosure;
-    return <Speaker name={name} isOpen={isOpen} onClose={onClose} />;
+    return <Speaker {...props} isOpen={isOpen} onClose={onClose} />;
   },
   SpeakerImage: ({ src, alt, float, width, children, source }) => {
     const { disclosure } = useContext(Context);
@@ -146,7 +147,15 @@ const components: MDXComponents = {
         fontSize="sm"
         marginTop={{ base: 0, lg: 1.5 }}
       >
-        <Image cursor="pointer" src={src} alt={alt} onClick={onOpen} />
+        <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} perspective={1000}>
+          <Image
+            rounded="lg"
+            cursor="pointer"
+            src={src}
+            alt={alt}
+            onClick={onOpen}
+          />
+        </Tilt>
         <Stack spacing={0}>
           <Box />
           {children}

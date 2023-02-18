@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Image,
   Input,
   Modal,
   ModalBody,
@@ -11,12 +12,15 @@ import {
   ModalOverlay,
   Stack,
   Text,
-  useColorModeValue
+  useColorModeValue,
+  VStack
 } from '@chakra-ui/react';
 import { Fragment, useEffect, useRef, useState } from 'react';
 
 export type SpeakerProps = React.PropsWithChildren<{
   name: string;
+  profileSrc: string;
+  speakingSrc: string;
   isOpen: boolean;
   onClose: () => void;
 }>;
@@ -54,7 +58,13 @@ interface Info {
   parentMessageId: string;
 }
 
-export function Speaker({ name, isOpen, onClose }: SpeakerProps) {
+export function Speaker({
+  name,
+  isOpen,
+  onClose,
+  profileSrc,
+  speakingSrc
+}: SpeakerProps) {
   const [isRunning, setIsRunning] = useState(false);
   const [conversation, setConversation] = useState<
     { user: string[]; bot: string[] }[]
@@ -135,23 +145,34 @@ export function Speaker({ name, isOpen, onClose }: SpeakerProps) {
       <ModalContent>
         <ModalHeader>{name}</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>
-          <Stack spacing={8} pb={4}>
-            {conversation.map(({ user, bot }, index) => (
-              <Fragment key={index}>
-                <DialogPart name="Me" sentences={user} />
-                <DialogPart name={name} sentences={bot} />
-              </Fragment>
-            ))}
-          </Stack>
-          <Box ref={scrollable} />
+        <ModalBody overflow="hidden" display="flex" flexDirection="column">
+          <VStack overflow="hidden" display="flex" flexDirection="column">
+            <Image
+              src={isRunning ? speakingSrc : profileSrc}
+              alt="Rachel Carson"
+              width="full"
+              maxW="200px"
+              maxH="200px"
+              objectFit="cover"
+              objectPosition="top"
+              borderRadius="full"
+            />
+            <Stack spacing={8} width="full" overflow="auto">
+              {conversation.map(({ user, bot }, index) => (
+                <Fragment key={index}>
+                  <DialogPart name="Me" sentences={user} />
+                  <DialogPart name={name} sentences={bot} />
+                </Fragment>
+              ))}
+              <Box ref={scrollable} />
+            </Stack>
+          </VStack>
         </ModalBody>
         <ModalFooter
           py={6}
           borderTopWidth={1}
-          borderTopColor={useColorModeValue('gray.200', 'gray.600')}
+          borderColor={useColorModeValue('gray.200', 'gray.600')}
         >
-          {/*<Image src="/images/rachelCarson/rachelCarsonSpeaking.gif" alt="Rachel Carson" width="40px" height="40px" />*/}
           <Input
             placeholder="Message"
             value={input}

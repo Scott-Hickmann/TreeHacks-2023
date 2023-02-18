@@ -28,6 +28,7 @@
     "next": "^13.1.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-parallax-tilt": "^1.7.104",
     "rehype-raw": "^6.1.1",
     "zod": "^3.20.6"
   },
