@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Heading,
+  HStack,
   Image,
   Link,
   Stack,
@@ -37,11 +38,6 @@ const commonHeadingProps = { mt: 6, mb: 4 } as const;
 const imagePadding = { base: 4, lg: 6 } as const;
 
 const defaultComponents: MDXComponents = {
-  h1: ({ children }) => (
-    <Heading as="h1" size="2xl" {...commonHeadingProps}>
-      {children}
-    </Heading>
-  ),
   h2: ({ children }) => (
     <Heading as="h2" size="xl" {...commonHeadingProps}>
       {children}
@@ -86,6 +82,21 @@ const defaultComponents: MDXComponents = {
 
 const components: MDXComponents = {
   ...defaultComponents,
+  h1: ({ children }) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { disclosure } = useContext(Context);
+    const { onOpen } = disclosure;
+    return (
+      <Heading as="h1" size="2xl" {...commonHeadingProps}>
+        <HStack align="center" justify="space-between">
+          <Text>{children}</Text>
+          <Button onClick={onOpen} size="sm" variant="outline">
+            Talk with me
+          </Button>
+        </HStack>
+      </Heading>
+    );
+  },
   Button: ({ children }) => <Button>{children}</Button>,
   Image: ({ src, alt, float, width, children, source }) => (
     <Stack
