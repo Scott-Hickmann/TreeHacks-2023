@@ -98,4 +98,5 @@ export function Content({ content: MDXComponent }: ContentProps) {
       />
     </Box>
   );
+ 
 }

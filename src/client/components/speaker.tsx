@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Input,
+  Image,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -60,7 +61,7 @@ export function Speaker({ name, children }: SpeakerProps) {
   >([
     {
       user: [],
-      bot: ['Please say hello to start the conversation.']
+      bot: ['Say hi to start chatting with me!']
     }
   ]);
   const [info, setInfo] = useState<Info>();
@@ -133,6 +134,7 @@ export function Speaker({ name, children }: SpeakerProps) {
     >
       {children}
       <Button onClick={onOpen}>Speak with {name}</Button>
+      {/*<Button onClick={onOpen} style={{backgroundImage:"url('/images/rachelCarson/rachelCarsonProfile.gif')",backgroundSize:"cover", width:"40px", height:"40px"}}></Button>*/}
       <Modal
         onClose={onClose}
         isOpen={isOpen}
@@ -160,6 +162,7 @@ export function Speaker({ name, children }: SpeakerProps) {
             borderTopWidth={1}
             borderTopColor={useColorModeValue('gray.200', 'gray.600')}
           >
+            {/*<Image src="/images/rachelCarson/rachelCarsonSpeaking.gif" alt="Rachel Carson" width="40px" height="40px" />*/}
             <Input
               placeholder="Message"
               value={input}
