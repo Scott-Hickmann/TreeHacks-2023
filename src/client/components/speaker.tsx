@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Input,
-  Image,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -12,12 +11,15 @@ import {
   ModalOverlay,
   Stack,
   Text,
-  useColorModeValue,
-  useDisclosure
+  useColorModeValue
 } from '@chakra-ui/react';
 import { Fragment, useEffect, useRef, useState } from 'react';
 
-export type SpeakerProps = React.PropsWithChildren<{ name: string }>;
+export type SpeakerProps = React.PropsWithChildren<{
+  name: string;
+  isOpen: boolean;
+  onClose: () => void;
+}>;
 
 const GPT_AGENT_URL = process.env.NEXT_PUBLIC_GPT_AGENT_URL;
 
@@ -52,9 +54,7 @@ interface Info {
   parentMessageId: string;
 }
 
-export function Speaker({ name, children }: SpeakerProps) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const speakerBg = useColorModeValue('gray.50', 'gray.800');
+export function Speaker({ name, isOpen, onClose }: SpeakerProps) {
   const [isRunning, setIsRunning] = useState(false);
   const [conversation, setConversation] = useState<
     { user: string[]; bot: string[] }[]
@@ -124,62 +124,50 @@ export function Speaker({ name, children }: SpeakerProps) {
   }, [scrollable, conversation]);
 
   return (
-    <Stack
-      display="inline-block"
-      p={4}
-      bg={speakerBg}
-      borderRadius="lg"
-      mt={4}
-      pt={-4}
+    <Modal
+      onClose={onClose}
+      isOpen={isOpen}
+      isCentered
+      scrollBehavior="inside"
+      size="4xl"
     >
-      {children}
-      <Button onClick={onOpen}>Speak with {name}</Button>
-      {/*<Button onClick={onOpen} style={{backgroundImage:"url('/images/rachelCarson/rachelCarsonProfile.gif')",backgroundSize:"cover", width:"40px", height:"40px"}}></Button>*/}
-      <Modal
-        onClose={onClose}
-        isOpen={isOpen}
-        isCentered
-        scrollBehavior="inside"
-        size="4xl"
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>{name}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Stack spacing={8} pb={4}>
-              {conversation.map(({ user, bot }, index) => (
-                <Fragment key={index}>
-                  <DialogPart name="Me" sentences={user} />
-                  <DialogPart name={name} sentences={bot} />
-                </Fragment>
-              ))}
-            </Stack>
-            <Box ref={scrollable} />
-          </ModalBody>
-          <ModalFooter
-            py={6}
-            borderTopWidth={1}
-            borderTopColor={useColorModeValue('gray.200', 'gray.600')}
-          >
-            {/*<Image src="/images/rachelCarson/rachelCarsonSpeaking.gif" alt="Rachel Carson" width="40px" height="40px" />*/}
-            <Input
-              placeholder="Message"
-              value={input}
-              onChange={(event) => setInput(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter') {
-                  send();
-                }
-              }}
-              mr={6}
-            />
-            <Button colorScheme="blue" isDisabled={isRunning} onClick={send}>
-              Send
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </Stack>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>{name}</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <Stack spacing={8} pb={4}>
+            {conversation.map(({ user, bot }, index) => (
+              <Fragment key={index}>
+                <DialogPart name="Me" sentences={user} />
+                <DialogPart name={name} sentences={bot} />
+              </Fragment>
+            ))}
+          </Stack>
+          <Box ref={scrollable} />
+        </ModalBody>
+        <ModalFooter
+          py={6}
+          borderTopWidth={1}
+          borderTopColor={useColorModeValue('gray.200', 'gray.600')}
+        >
+          {/*<Image src="/images/rachelCarson/rachelCarsonSpeaking.gif" alt="Rachel Carson" width="40px" height="40px" />*/}
+          <Input
+            placeholder="Message"
+            value={input}
+            onChange={(event) => setInput(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                send();
+              }
+            }}
+            mr={6}
+          />
+          <Button colorScheme="blue" isDisabled={isRunning} onClick={send}>
+            Send
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 }
