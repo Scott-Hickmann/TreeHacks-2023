@@ -5,7 +5,8 @@ import {
   Image,
   Link,
   Stack,
-  Text
+  Text,
+  useColorModeValue
 } from '@chakra-ui/react';
 import { MDXComponents, MDXContent } from 'mdx/types.js';
 
@@ -49,7 +50,7 @@ const components: MDXComponents = {
   ),
   p: ({ children }) => <Text mt={4}>{children}</Text>,
   blockquote: ({ children }) => (
-    <Text fontSize="xl" mt={4}>
+    <Text as="span" fontSize="xl">
       {children}
     </Text>
   ),
@@ -61,6 +62,8 @@ const components: MDXComponents = {
 };
 
 export function Content({ content: MDXComponent }: ContentProps) {
+  const speakerBg = useColorModeValue('gray.50', 'gray.800');
+
   return (
     <Box textAlign="justify">
       <MDXComponent
@@ -85,6 +88,19 @@ export function Content({ content: MDXComponent }: ContentProps) {
                 {children}
                 {source && <Text fontStyle="italic">{source}</Text>}
               </Stack>
+            </Stack>
+          ),
+          Speaker: ({ name, children }) => (
+            <Stack
+              display="inline-block"
+              p={4}
+              bg={speakerBg}
+              borderRadius="lg"
+              mt={4}
+              pt={-4}
+            >
+              {children}
+              <Button>Speak with {name}</Button>
             </Stack>
           )
         }}
