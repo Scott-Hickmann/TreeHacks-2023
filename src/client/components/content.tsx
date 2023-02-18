@@ -66,8 +66,6 @@ const components: MDXComponents = {
   )
 };
 
-/*
-TODO why button not rendering??*/
 export function Content({ content: MDXComponent }: ContentProps) {
   return (
     <Box textAlign="justify" margin="auto" maxW="80ch">
@@ -121,8 +119,9 @@ export function Content({ content: MDXComponent }: ContentProps) {
                   </Text>
                 )}
                 <Button size="sm" variant="outline" ml="auto">
-                  Let's Talk
-                </Button>
+                  Talk with me
+                </Button>{' '}
+                {/* TODO scott pls implement :3 */}
               </Stack>
             </Stack>
           ),
