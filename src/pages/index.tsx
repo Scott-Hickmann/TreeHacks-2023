@@ -7,7 +7,5 @@ import Diogenes from 'common/content/diogenes.mdx';
 import Charlotte from 'common/content/charlotteBronte.mdx';
 
 export default function HomePage() {
-  <Layout>
-	return <Content content={RachelCarson} />;
-  </Layout>
+  return <Splash></Splash>;
 }

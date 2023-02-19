@@ -42,7 +42,6 @@ function Card(props: CardProps) {
             width="full"
             contrast={1.75}
           />
-          {/*add black box gradient to fade out bottom of image */}
           <Box
             position={'absolute'}
             bottom={'0'}
