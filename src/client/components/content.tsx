@@ -95,7 +95,7 @@ const components: MDXComponents = {
         <HStack align="center" justify="space-between">
           <Text>{children}</Text>
           <Button onClick={onOpen} size="sm" variant="outline">
-            Talk with me
+            <Box> Talk with me</Box>
           </Button>
         </HStack>
       </Heading>

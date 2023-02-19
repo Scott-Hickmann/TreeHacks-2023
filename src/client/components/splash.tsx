@@ -79,10 +79,17 @@ export default function Splash() {
       height="100%"
       width="100%"
     >
-      <Heading as="h1" size="2xl" mt={6} mb={4} textAlign="center">
+      <Heading
+        as="h1"
+        size="2xl"
+        mt={6}
+        mb={4}
+        textAlign="center"
+        fontWeight={'light'}
+      >
         Talk to History.
       </Heading>
-      <Text textAlign="center" fontStyle={'italic'}>
+      <Text textAlign="center" fontFamily={'montserrat'}>
         Learn history, one conversation at a time.
       </Text>
       <Divider orientation="horizontal" margin="20px" />
@@ -93,9 +100,9 @@ export default function Splash() {
         padding="5px"
       >
         <Card
-          figure="Reyniere"
-          img="images/reyniere/reyniereProfile.jpeg"
-          link="/articles/reyniere"
+          figure="Sun Tzu"
+          img="images/sunTzu/sunTzuStatic.gif"
+          link="/articles/sunTzu.mdx"
         />
         <Card
           figure="Rachel Carson"
@@ -104,7 +111,7 @@ export default function Splash() {
         />
         <Card
           figure="Katherine Johnson"
-          img="images/katherineJohnson/katherineJohnsonProfile.jpg"
+          img="images/katherineJohnson/katherineJohnsonStatic.gif"
           link="/articles/katherineJohnson"
         />
         <Card

@@ -70,6 +70,7 @@ function DialogPart({ name, sentences }: DialogPartProps) {
 interface Info {
   conversationId: string;
   parentMessageId: string;
+  botName: string;
 }
 
 export function Speaker({
