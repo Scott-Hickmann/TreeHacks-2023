@@ -128,9 +128,9 @@ export default function Splash() {
           link="/articles/katherineJohnson"
         />
         <Card
-          figure="Diogenes"
-          img="images/diogenes/diogenes.jpg"
-          link="/articles/diogenes"
+          figure="Gottfried Leibniz"
+          img="images/gottfriedLeibniz/profile.gif"
+          link="/articles/gottfriedLeibniz"
         />
       </Stack>
     </Box>
