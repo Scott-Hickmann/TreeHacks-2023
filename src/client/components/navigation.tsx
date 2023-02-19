@@ -5,7 +5,8 @@ import {
   Heading,
   HStack,
   useColorMode,
-  useColorModeValue
+  useColorModeValue,
+  Link
 } from '@chakra-ui/react';
 import React, { ReactElement } from 'react';
 
@@ -30,7 +31,9 @@ export default function Navigation(): ReactElement {
           justify="space-between"
           width="full"
         >
-          <Heading>Talk to History.</Heading>
+          <Heading>
+            <Link href="/">Talk to History.</Link>
+          </Heading>
           <Button aria-label="Toggle color mode" onClick={toggleColorMode}>
             {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
           </Button>

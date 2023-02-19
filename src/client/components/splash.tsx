@@ -15,6 +15,7 @@ import Tilt from 'react-parallax-tilt';
 interface CardProps {
   figure: string;
   img: string;
+  link: string;
 }
 function Card(props: CardProps) {
   return (
@@ -29,7 +30,7 @@ function Card(props: CardProps) {
       glarePosition="bottom"
       glareBorderRadius="20px" // TODO why is the glare not working?
     >
-      <Link href={`index.html`}>
+      <Link href={props.link}>
         <Box
           maxW={{ base: 'initial', md: '10cm' }}
           borderWidth="1px"
@@ -92,9 +93,18 @@ export default function Splash() {
         <Card
           figure="Charlotte Bronte"
           img="images/charlotteBronte/charlotteBronteProfile.jpg"
+          link="/articles/charlotteBronte"
         />
-        <Card figure="Rachel Carson" img="images/rachelCarson/profile.gif" />
-        <Card figure="Diogenes" img="images/diogenes/diogenes.jpg" />
+        <Card
+          figure="Rachel Carson"
+          img="images/rachelCarson/profile.gif"
+          link="/articles/rachelCarson"
+        />
+        <Card
+          figure="Diogenes"
+          img="images/diogenes/diogenes.jpg"
+          link="/articles/diogenes"
+        />
       </Stack>
     </Box>
   );
