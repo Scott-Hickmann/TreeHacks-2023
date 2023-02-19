@@ -308,7 +308,7 @@ export function Speaker({
               <Heading size="md">{name}</Heading>
               <HStack>
                 <Text fontSize="sm" display="inherit">
-                  Enable Lip Sync{' '}
+                  Enable Lip Sync&nbsp;
                   <Text as="span" display={{ base: 'none', md: 'inherit' }}>
                     (Requires Waiting)
                   </Text>
