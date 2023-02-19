@@ -3,23 +3,23 @@ import { TRPCClientError } from '@trpc/client';
 import { publicProcedure, router } from 'server/trpc';
 import { z } from 'zod';
 
-const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY;
-if (!GOOGLE_PRIVATE_KEY) {
-  throw new Error('GOOGLE_PRIVATE_KEY is not set');
-}
-const GOOGLE_CLIENT_EMAIL = process.env.GOOGLE_CLIENT_EMAIL;
-if (!GOOGLE_CLIENT_EMAIL) {
-  throw new Error('GOOGLE_CLIENT_EMAIL is not set');
-}
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-if (!GOOGLE_CLIENT_ID) {
-  throw new Error('GOOGLE_CLIENT_ID is not set');
-}
-
 async function getGenericAudio(message: string, isFemale: boolean) {
+  const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY;
+  if (!GOOGLE_PRIVATE_KEY) {
+    throw new TRPCClientError('GOOGLE_PRIVATE_KEY is not set');
+  }
+  const GOOGLE_CLIENT_EMAIL = process.env.GOOGLE_CLIENT_EMAIL;
+  if (!GOOGLE_CLIENT_EMAIL) {
+    throw new TRPCClientError('GOOGLE_CLIENT_EMAIL is not set');
+  }
+  const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+  if (!GOOGLE_CLIENT_ID) {
+    throw new TRPCClientError('GOOGLE_CLIENT_ID is not set');
+  }
+
   const client = new TextToSpeechClient({
     credentials: {
-      private_key: GOOGLE_PRIVATE_KEY,
+      private_key: GOOGLE_PRIVATE_KEY.split(String.raw`\n`).join('\n'),
       client_email: GOOGLE_CLIENT_EMAIL,
       client_id: GOOGLE_CLIENT_ID
     }
