@@ -1,12 +1,11 @@
 import {
-  Link,
   Box,
-  Stack,
-  Heading,
   Divider,
+  Heading,
   Image,
-  Text,
-  BackgroundProps
+  Link,
+  Stack,
+  Text
 } from '@chakra-ui/react';
 import Tilt from 'react-parallax-tilt';
 

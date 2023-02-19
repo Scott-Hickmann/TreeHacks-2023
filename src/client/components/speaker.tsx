@@ -20,6 +20,7 @@ import {
 } from '@chakra-ui/react';
 import { trpc } from 'client/trpc';
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import { useWebSocket } from 'react-use-websocket/dist/lib/use-websocket';
 
 export type SpeakerProps = React.PropsWithChildren<{
   articleId: string;
@@ -30,7 +31,12 @@ export type SpeakerProps = React.PropsWithChildren<{
   onClose: () => void;
 }>;
 
+if (!process.env.NEXT_PUBLIC_GPT_AGENT_URL)
+  throw new Error('GPT_AGENT_URL is not set');
 const GPT_AGENT_URL = process.env.NEXT_PUBLIC_GPT_AGENT_URL;
+
+if (!process.env.NEXT_PUBLIC_GPU_AGENT_URL)
+  throw new Error('GPU_AGENT_URL is not set');
 const GPU_AGENT_URL = process.env.NEXT_PUBLIC_GPU_AGENT_URL;
 
 function splitSentences(buffer: string, trim = true) {
@@ -53,8 +59,10 @@ function DialogPart({ name, sentences }: DialogPartProps) {
   if (!sentences.length) return null;
   return (
     <Stack spacing={2}>
-      <Text fontWeight="bold">{name}</Text>
-      <Text>{sentences.join(' ')}</Text>
+      <Text fontFamily="article" fontWeight="bold">
+        {name}
+      </Text>
+      <Text fontFamily="article">{sentences.join(' ')}</Text>
     </Stack>
   );
 }
@@ -72,7 +80,7 @@ export function Speaker({
   profileSrc,
   speakingSrc
 }: SpeakerProps) {
-  const [isRunning, setIsRunning] = useState(false);
+  const [generating, setGenerating] = useState(false);
   const [conversation, setConversation] = useState<
     { user: string[]; bot: string[] }[]
   >([]);
@@ -92,7 +100,59 @@ export function Speaker({
 
   const trpcContext = trpc.useContext();
 
+  const buffer = useRef<string>('');
+  const botSentences = useRef<string[]>([]);
+  const websocket = useWebSocket(GPT_AGENT_URL, {
+    onOpen: () => {
+      console.log('WebSocket connection established.');
+    },
+    onMessage: ({ data }) => {
+      let message:
+        | { type: 'data'; data: string }
+        | { type: 'info'; data: Info };
+      try {
+        message = JSON.parse(data);
+      } catch (error) {
+        console.error(error);
+        return;
+      }
+      if (message.type === 'data') {
+        const { data } = message;
+        buffer.current += data;
+        const sentences = splitSentences(buffer.current, false);
+        if (sentences.length > 1) {
+          const newSentences = sentences.slice(0, -1);
+          if (!lipsEnabled) {
+            ttsQueue.current.push(...newSentences);
+            tts();
+          }
+          botSentences.current.push(...newSentences);
+          setConversation((conversation) => {
+            const last = conversation[conversation.length - 1];
+            return [
+              ...conversation.slice(0, -1),
+              { user: last.user, bot: [...botSentences.current] }
+            ];
+          });
+          buffer.current = sentences[sentences.length - 1];
+        }
+      } else if (message.type === 'info') {
+        setInfo(message.data);
+        if (lipsEnabled) {
+          console.log(
+            'Finished generating content, generating text and video...'
+          );
+          ttsQueue.current.push(botSentences.current.join(' '));
+          tts();
+        }
+      } else {
+        console.error('Unknown message type', message);
+      }
+    }
+  });
+
   const play = useCallback(async () => {
+    console.log('Play', isOpen);
     if (videoIsRunning.current || !isOpen) return;
     videoIsRunning.current = true;
     setPlaying(true);
@@ -166,6 +226,7 @@ export function Speaker({
             });
             const url = window.URL.createObjectURL(blob);
             videoQueue.current.push(url);
+            setGenerating(false);
             play();
             break;
           } catch (error) {
@@ -176,87 +237,37 @@ export function Speaker({
       } else {
         const audioUrl = window.URL.createObjectURL(audioBlob);
         videoQueue.current.push(audioUrl);
+        setGenerating(false);
         play();
       }
     }
     ttsIsRunning.current = false;
-  }, [articleId, play, trpcContext.client.tts, lipsEnabled]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [articleId, trpcContext.client.tts, lipsEnabled]);
 
   const send = useCallback(() => {
-    setIsRunning(true);
+    buffer.current = '';
+    botSentences.current = [];
+    setGenerating(true);
     setConversation((conversation) => [
       ...conversation,
       { user: splitSentences(input), bot: [] }
     ]);
-    if (!GPT_AGENT_URL) throw new Error('GPT_AGENT_URL is not set');
-    if (!GPU_AGENT_URL) throw new Error('GPU_AGENT_URL is not set');
-    const ws = new window.WebSocket(GPT_AGENT_URL);
-    let buffer = '';
-    const botSentences: string[] = [];
-    ws.onmessage = (event) => {
-      let message:
-        | { type: 'data'; data: string }
-        | { type: 'info'; data: Info };
-      try {
-        message = JSON.parse(event.data);
-      } catch (error) {
-        console.error(error);
-        return;
-      }
-      if (message.type === 'data') {
-        const { data } = message;
-        buffer += data;
-        const sentences = splitSentences(buffer, false);
-        if (sentences.length > 1) {
-          const newSentences = sentences.slice(0, -1);
-          if (!lipsEnabled) {
-            ttsQueue.current.push(...newSentences);
-            tts();
-          }
-          botSentences.push(...newSentences);
-          setConversation((conversation) => {
-            const last = conversation[conversation.length - 1];
-            return [
-              ...conversation.slice(0, -1),
-              { user: last.user, bot: botSentences }
-            ];
-          });
-          buffer = sentences[sentences.length - 1];
-        }
-      } else if (message.type === 'info') {
-        setInfo(message.data);
-        if (lipsEnabled) {
-          console.log(
-            'Finished generating content, generating text and video...'
-          );
-          ttsQueue.current.push(botSentences.join(' '));
-          tts();
-        }
-        ws.close();
-      } else {
-        console.error('Unknown message type', message);
-      }
-    };
-    ws.onopen = () => {
-      ws.send(JSON.stringify({ input, info }));
-      setInput('');
-    };
-    ws.onclose = () => {
-      setIsRunning(false);
-    };
-  }, [info, input, lipsEnabled, tts]);
+    websocket.sendJsonMessage({ input, info: info ? { ...info } : undefined });
+    setInput('');
+  }, [info, input, websocket]);
 
   const isUnmountedRef = useRef(false);
   useEffect(() => {
     if (isUnmountedRef.current) return;
     isUnmountedRef.current = false;
-    if (conversation.length > 0 || isRunning) return;
+    if (conversation.length > 0 || generating) return;
     console.log('Pregenerating content...');
     send();
     return () => {
       isUnmountedRef.current = true;
     };
-  }, [conversation.length, isRunning, send]);
+  }, [conversation.length, generating, send]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -294,6 +305,7 @@ export function Speaker({
               <HStack>
                 <Text fontSize="sm">Enable Lip Sync</Text>
                 <Switch
+                  isDisabled={generating || playing}
                   isChecked={lipsEnabled}
                   onChange={() => setLipsEnabled((lipsEnabled) => !lipsEnabled)}
                 />
@@ -376,7 +388,7 @@ export function Speaker({
             }}
             mr={6}
           />
-          <Button colorScheme="blue" isDisabled={isRunning} onClick={send}>
+          <Button colorScheme="blue" isDisabled={generating} onClick={send}>
             Send
           </Button>
         </ModalFooter>
