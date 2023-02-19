@@ -25,16 +25,18 @@ async function getGenericAudio(message: string, voice: string) {
     }
   });
 
+  const voiceName =
+    voice === 'female'
+      ? 'en-GB-Neural2-A'
+      : voice === 'male'
+      ? 'en-GB-Neural2-B'
+      : voice;
+  const voiceNameSplits = voiceName.split('-');
   const [response] = await client.synthesizeSpeech({
     input: { text: message },
     voice: {
-      languageCode: 'en-GB',
-      name:
-        voice === 'female'
-          ? 'en-GB-Neural2-A'
-          : voice === 'male'
-          ? 'en-GB-Neural2-B'
-          : voice
+      languageCode: `${voiceNameSplits[0]}-${voiceNameSplits[1]}`,
+      name: voiceName
     },
     audioConfig: { audioEncoding: 'MP3' }
   });
