@@ -15,6 +15,7 @@ import {
   Text,
   useColorModeValue
 } from '@chakra-ui/react';
+import { trpc } from 'client/trpc';
 import { Fragment, useEffect, useRef, useState } from 'react';
 
 export type SpeakerProps = React.PropsWithChildren<{
@@ -77,6 +78,55 @@ export function Speaker({
   const [info, setInfo] = useState<Info>();
   const [input, setInput] = useState<string>('');
   const scrollable = useRef<HTMLDivElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const ttsQueue = useRef<string[]>([...conversation[0].bot]);
+  const audioQueue = useRef<string[]>([]);
+
+  const ttsIsRunning = useRef(false);
+  const audioIsRunning = useRef(false);
+  const [playing, setPlaying] = useState(false);
+
+  const audio = async () => {
+    if (audioIsRunning.current) return;
+    audioIsRunning.current = true;
+    setPlaying(true);
+    while (audioQueue.current.length) {
+      const audioUrl = audioQueue.current.shift();
+      if (!audioUrl) continue;
+      if (!audioRef.current) continue;
+      audioRef.current.src = audioUrl;
+      audioRef.current.play();
+      await new Promise<void>((resolve) => {
+        if (!audioRef.current) {
+          resolve();
+          return;
+        }
+        audioRef.current.onended = () => resolve();
+      });
+    }
+    audioIsRunning.current = false;
+    setPlaying(false);
+  };
+
+  const tts = async () => {
+    if (ttsIsRunning.current) return;
+    ttsIsRunning.current = true;
+    while (ttsQueue.current.length) {
+      const input = ttsQueue.current.shift();
+      if (!input) continue;
+      const data = await trpcContext.client.tts.query({
+        input,
+        isFemale: true
+      });
+      if (!data) continue;
+      const buffer = new Uint8Array(data);
+      const blob = new Blob([buffer], { type: 'audio/wav' });
+      const url = window.URL.createObjectURL(blob);
+      audioQueue.current.push(url);
+      audio();
+    }
+    ttsIsRunning.current = false;
+  };
 
   const send = () => {
     setIsRunning(true);
@@ -102,11 +152,14 @@ export function Speaker({
         buffer += data;
         const sentences = splitSentences(buffer, false);
         if (sentences.length > 1) {
+          const newSentences = sentences.slice(0, -1);
+          ttsQueue.current.push(...newSentences);
+          tts();
           setConversation((conversation) => {
             const last = conversation[conversation.length - 1];
             return [
               ...conversation.slice(0, -1),
-              { user: last.user, bot: [...last.bot, ...sentences.slice(0, -1)] }
+              { user: last.user, bot: [...last.bot, ...newSentences] }
             ];
           });
           buffer = sentences[sentences.length - 1];
@@ -133,6 +186,14 @@ export function Speaker({
     }
   }, [scrollable, conversation]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    tts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
+
+  const trpcContext = trpc.useContext();
+
   return (
     <Modal
       onClose={onClose}
@@ -150,7 +211,7 @@ export function Speaker({
           <Stack>
             <Heading size="md">{name}</Heading>
             <Image
-              src={isRunning ? speakingSrc : profileSrc}
+              src={playing ? speakingSrc : profileSrc}
               alt="Rachel Carson"
               width="full"
               maxW="200px"
@@ -161,6 +222,9 @@ export function Speaker({
               alignSelf="center"
             />
           </Stack>
+          <audio ref={audioRef}>
+            <track kind="captions" />
+          </audio>
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
