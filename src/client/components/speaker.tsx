@@ -212,7 +212,7 @@ export function Speaker({
             <Heading size="md">{name}</Heading>
             <Image
               src={playing ? speakingSrc : profileSrc}
-              alt="Rachel Carson"
+              alt={name}
               width="full"
               maxW="200px"
               maxH="200px"
