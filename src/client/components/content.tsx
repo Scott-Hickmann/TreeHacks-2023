@@ -10,14 +10,15 @@ import {
   useColorModeValue,
   useDisclosure
 } from '@chakra-ui/react';
-import { MDXComponents, MDXContent } from 'mdx/types.js';
+import { MDXComponents } from 'mdx/types.js';
+import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { createContext, useContext } from 'react';
 import Tilt from 'react-parallax-tilt';
 
 import { Speaker } from './speaker';
 
 export interface ContentProps {
-  content: MDXContent;
+  content: MDXRemoteSerializeResult;
 }
 
 const Context = createContext<{
@@ -184,13 +185,13 @@ const components: MDXComponents = {
   }
 };
 
-export function Content({ content: MDXComponent }: ContentProps) {
+export function Content({ content }: ContentProps) {
   const disclosure = useDisclosure();
 
   return (
     <Box textAlign="left" margin="auto" maxW="80ch">
       <Context.Provider value={{ disclosure }}>
-        <MDXComponent components={components} />
+        {content ? <MDXRemote {...content} components={components} /> : null}
       </Context.Provider>
     </Box>
   );

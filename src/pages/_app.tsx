@@ -1,6 +1,6 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { mode, StyleFunctionProps } from '@chakra-ui/theme-tools';
-import { Rufina, Montserrat } from '@next/font/google';
+import { Montserrat, Rufina } from '@next/font/google';
 import { trpc } from 'client/trpc';
 import type { AppProps } from 'next/app';
 
