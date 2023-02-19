@@ -13,6 +13,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Spinner,
   Stack,
   Switch,
   Text,
@@ -26,8 +27,6 @@ export type SpeakerProps = React.PropsWithChildren<{
   articleId: string;
   name: string;
   voice: string;
-  profileSrc: string;
-  speakingSrc: string;
   isOpen: boolean;
   onClose: () => void;
 }>;
@@ -79,9 +78,7 @@ export function Speaker({
   name,
   voice,
   isOpen,
-  onClose,
-  profileSrc,
-  speakingSrc
+  onClose
 }: SpeakerProps) {
   const [generating, setGenerating] = useState(false);
   const [conversation, setConversation] = useState<
@@ -155,6 +152,7 @@ export function Speaker({
   });
 
   const play = useCallback(async () => {
+    console.log('Playing...', isOpen);
     if (videoIsRunning.current || !isOpen) return;
     videoIsRunning.current = true;
     setPlaying(true);
@@ -276,14 +274,14 @@ export function Speaker({
   }, [conversation.length, generating, send]);
 
   useEffect(() => {
-    if (!isOpen) return;
-    console.log('Play content on open...');
+    if (!isOpen || generating) return;
     const timeout = setTimeout(() => {
+      console.log('Play content on open...');
       play();
     }, 1000);
     return () => clearTimeout(timeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen]);
+  }, [isOpen, generating]);
 
   useEffect(() => {
     if (scrollable.current) {
@@ -327,15 +325,26 @@ export function Speaker({
               >
                 <Image
                   position="absolute"
-                  src={playing ? speakingSrc : profileSrc}
+                  src={`/images/${articleId}/${
+                    playing ? 'speaking' : 'profile'
+                  }.gif`}
                   alt={name}
                   w="200px"
                   h="200px"
                   objectFit="cover"
                   objectPosition="top"
                 />
+                <Center
+                  position="absolute"
+                  width="full"
+                  height="full"
+                  bgColor="blackAlpha.500"
+                  opacity={generating && lipsEnabled ? 1 : 0}
+                >
+                  <Spinner color={useColorModeValue('white', 'black')} />
+                </Center>
                 <Box
-                  position="relative"
+                  position="absolute"
                   width="full"
                   height="full"
                   borderRadius="full"
