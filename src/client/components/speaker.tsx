@@ -25,6 +25,7 @@ import { useWebSocket } from 'react-use-websocket/dist/lib/use-websocket';
 export type SpeakerProps = React.PropsWithChildren<{
   articleId: string;
   name: string;
+  voice: string;
   profileSrc: string;
   speakingSrc: string;
   isOpen: boolean;
@@ -76,6 +77,7 @@ interface Info {
 export function Speaker({
   articleId,
   name,
+  voice,
   isOpen,
   onClose,
   profileSrc,
@@ -153,7 +155,6 @@ export function Speaker({
   });
 
   const play = useCallback(async () => {
-    console.log('Play', isOpen);
     if (videoIsRunning.current || !isOpen) return;
     videoIsRunning.current = true;
     setPlaying(true);
@@ -203,7 +204,7 @@ export function Speaker({
       if (!input) continue;
       const data = await trpcContext.client.tts.query({
         input,
-        isFemale: true
+        voice
       });
       if (!data) continue;
       const buffer = new Uint8Array(data);
@@ -254,9 +255,13 @@ export function Speaker({
       ...conversation,
       { user: splitSentences(input), bot: [] }
     ]);
-    websocket.sendJsonMessage({ input, info: info ? { ...info } : undefined });
+    websocket.sendJsonMessage({
+      articleId,
+      input,
+      info: info ? { ...info } : undefined
+    });
     setInput('');
-  }, [info, input, websocket]);
+  }, [info, articleId, input, websocket]);
 
   const isUnmountedRef = useRef(false);
   useEffect(() => {
