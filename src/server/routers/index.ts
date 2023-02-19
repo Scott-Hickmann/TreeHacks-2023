@@ -3,7 +3,7 @@ import { TRPCClientError } from '@trpc/client';
 import { publicProcedure, router } from 'server/trpc';
 import { z } from 'zod';
 
-async function getGenericAudio(message: string, isFemale: boolean) {
+async function getGenericAudio(message: string, voice: string) {
   const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY;
   if (!GOOGLE_PRIVATE_KEY) {
     throw new TRPCClientError('GOOGLE_PRIVATE_KEY is not set');
@@ -29,7 +29,12 @@ async function getGenericAudio(message: string, isFemale: boolean) {
     input: { text: message },
     voice: {
       languageCode: 'en-GB',
-      name: isFemale ? 'en-GB-Neural2-A' : 'en-GB-Neural2-B'
+      name:
+        voice === 'female'
+          ? 'en-GB-Neural2-A'
+          : voice === 'male'
+          ? 'en-GB-Neural2-B'
+          : voice
     },
     audioConfig: { audioEncoding: 'MP3' }
   });
@@ -44,11 +49,11 @@ export const appRouter = router({
     .input(
       z.object({
         input: z.string(),
-        isFemale: z.boolean()
+        voice: z.string()
       })
     )
-    .query(({ input: { input, isFemale } }) => {
-      return getGenericAudio(input, isFemale);
+    .query(({ input: { input, voice } }) => {
+      return getGenericAudio(input, voice);
     })
 });
 
