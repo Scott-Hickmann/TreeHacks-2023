@@ -4,9 +4,9 @@ import {
   Button,
   Heading,
   HStack,
+  Link,
   useColorMode,
-  useColorModeValue,
-  Link
+  useColorModeValue
 } from '@chakra-ui/react';
 import React, { ReactElement } from 'react';
 

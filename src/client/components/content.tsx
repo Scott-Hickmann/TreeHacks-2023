@@ -18,12 +18,15 @@ import Tilt from 'react-parallax-tilt';
 import { Speaker } from './speaker';
 
 export interface ContentProps {
+  articleId: string;
   content: MDXRemoteSerializeResult;
 }
 
 const Context = createContext<{
+  articleId: string;
   disclosure: ReturnType<typeof useDisclosure>;
 }>({
+  articleId: '',
   disclosure: {
     isOpen: false,
     onOpen: () => undefined,
@@ -139,9 +142,16 @@ const components: MDXComponents = {
     );
   },
   Speaker: (props) => {
-    const { disclosure } = useContext(Context);
+    const { articleId, disclosure } = useContext(Context);
     const { isOpen, onClose } = disclosure;
-    return <Speaker {...props} isOpen={isOpen} onClose={onClose} />;
+    return (
+      <Speaker
+        {...props}
+        articleId={articleId}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
+    );
   },
   SpeakerImage: ({ src, alt, float, width, children, source }) => {
     const { disclosure } = useContext(Context);
@@ -185,12 +195,12 @@ const components: MDXComponents = {
   }
 };
 
-export function Content({ content }: ContentProps) {
+export function Content({ articleId, content }: ContentProps) {
   const disclosure = useDisclosure();
 
   return (
     <Box textAlign="left" margin="auto" maxW="80ch">
-      <Context.Provider value={{ disclosure }}>
+      <Context.Provider value={{ articleId, disclosure }}>
         {content ? <MDXRemote {...content} components={components} /> : null}
       </Context.Provider>
     </Box>

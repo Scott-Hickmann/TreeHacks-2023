@@ -7,14 +7,15 @@ import { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 
 interface ArticlePageProps {
+  articleId: string;
   content: MDXRemoteSerializeResult;
 }
 
-export default function ArticlePage({ content }: ArticlePageProps) {
+export default function ArticlePage({ articleId, content }: ArticlePageProps) {
   return (
     <Layout title="Home" description="Home">
       <Box m={{ base: 6, md: 8 }}>
-        <Content content={content} />
+        <Content articleId={articleId} content={content} />
       </Box>
     </Layout>
   );
@@ -38,7 +39,7 @@ export const getStaticProps: GetStaticProps<ArticlePageProps> = async ({
     const mdx = fs.readFileSync(`src/common/content/${articleId}.mdx`, 'utf8');
     const content = await serialize(mdx);
     return {
-      props: { content }
+      props: { articleId, content }
     };
   } catch (err) {
     return { notFound: true };
