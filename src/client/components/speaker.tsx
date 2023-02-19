@@ -152,7 +152,7 @@ export function Speaker({
   });
 
   const play = useCallback(async () => {
-    console.log('Playing...', isOpen);
+    console.log('Playing...');
     if (videoIsRunning.current || !isOpen) return;
     videoIsRunning.current = true;
     setPlaying(true);
@@ -307,7 +307,7 @@ export function Speaker({
             <HStack justify="space-between" pr={8}>
               <Heading size="md">{name}</Heading>
               <HStack>
-                <Text fontSize="sm">Enable Lip Sync</Text>
+                <Text fontSize="sm">Enable Lip Sync (Requires Waiting)</Text>
                 <Switch
                   isDisabled={generating || playing}
                   isChecked={lipsEnabled}
