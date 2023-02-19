@@ -2,14 +2,14 @@ import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
-  Divider,
   Heading,
   HStack,
   Image,
   Link,
   Stack,
   Text,
-  useColorMode
+  useColorMode,
+  useColorModeValue
 } from '@chakra-ui/react';
 import Tilt from 'react-parallax-tilt';
 
@@ -37,8 +37,9 @@ function Card(props: CardProps) {
         borderWidth="1px"
         rounded="lg"
         overflow="hidden"
-        width={{ base: '100%', md: '25vh', lg: '32vh' }}
-        height={{ base: '100px', md: '50vh' }}
+        width="full"
+        maxW={{ base: 'full', md: '300px' }}
+        height={{ base: '100px', md: '400px' }}
       >
         <Link href={props.link}>
           <Image
@@ -61,7 +62,7 @@ function Card(props: CardProps) {
           />
           <Text
             p={4}
-            fontSize={{ sm: '40px', md: '25px', lg: '40px' }}
+            fontSize={{ base: '24px', sm: '40px', md: '25px', lg: '40px' }}
             position={'absolute'}
             bottom={'5%'}
             left={'8%'}
@@ -86,16 +87,18 @@ export default function Splash() {
       height="full"
       width="full"
     >
-      <HStack justify="space-between" align="start" p={6}>
+      <HStack
+        justify="space-between"
+        align="start"
+        p={6}
+        bg={useColorModeValue('white', 'black')}
+        px={{ base: 6, md: 8 }}
+        borderBottomWidth={1}
+        borderBottomColor={useColorModeValue('gray.100', 'black')}
+      >
         <Box />
         <Box>
-          <Heading
-            as="h1"
-            size="2xl"
-            pb={4}
-            textAlign="center"
-            fontWeight={'light'}
-          >
+          <Heading as="h1" size="2xl" pb={4} textAlign="center">
             Talk to History.
           </Heading>
           <Text textAlign="center" fontFamily={'montserrat'}>
@@ -106,12 +109,13 @@ export default function Splash() {
           {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
         </Button>
       </HStack>
-      <Divider orientation="horizontal" mb={5} />
 
       <Stack
         direction={{ base: 'column', md: 'row' }}
         justify="center"
         padding="5px"
+        spacing={{ base: 2, md: 4 }}
+        m={{ base: 0, md: 5 }}
       >
         <Card
           figure="Rachel Carson"

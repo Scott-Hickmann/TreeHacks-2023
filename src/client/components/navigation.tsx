@@ -17,7 +17,7 @@ export default function Navigation(): ReactElement {
     <Box
       bg={useColorModeValue('white', 'black')}
       px={{ base: 6, md: 8 }}
-      borderBottomWidth={2}
+      borderBottomWidth={1}
       borderBottomColor={useColorModeValue('gray.100', 'black')}
       position="sticky"
       top={0}
