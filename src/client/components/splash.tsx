@@ -40,8 +40,8 @@ function Card(props: CardProps) {
           <Image
             src={props.img}
             alt={props.figure}
-            width="full"
             contrast={1.75}
+            maxHeight={{ base: 'initial', md: '30vw' }}
           />
           <Box
             position={'absolute'}
@@ -49,7 +49,7 @@ function Card(props: CardProps) {
             left={'0'}
             height={'100%'}
             width={'100%'}
-            bgGradient="linear(to-b, transparent, gray.800)"
+            bgGradient="linear(to-b, transparent, {{colorMode === 'light' ? 'gray.800' : 'gray.200'}}})"
             rounded="lg"
           />
           <Text
@@ -71,7 +71,6 @@ function Card(props: CardProps) {
 export default function Splash() {
   return (
     <Box
-      //   backgroundImage={`url('images/minimalLight.png')`}
       backgroundSize="cover"
       backgroundPosition="center"
       height="100%"
@@ -104,6 +103,11 @@ export default function Splash() {
           figure="Diogenes"
           img="images/diogenes/diogenes.jpg"
           link="/articles/diogenes"
+        />
+        <Card
+          figure="Reyniere"
+          img="images/reyniere/reyniereProfile.jpeg"
+          link="/articles/reyniere"
         />
       </Stack>
     </Box>
