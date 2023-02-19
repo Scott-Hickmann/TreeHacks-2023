@@ -55,7 +55,7 @@ function Card(props: CardProps) {
             left={'0'}
             height={'100%'}
             width={'100%'}
-            bgGradient="linear(to-b, transparent, {{colorMode === 'light' ? 'gray.800' : 'gray.200'}}})"
+            bgGradient="linear(to-b, transparent, gray.800)"
             rounded="lg"
           />
           <Text
