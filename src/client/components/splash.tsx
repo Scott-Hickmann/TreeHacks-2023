@@ -1,11 +1,15 @@
+import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import {
   Box,
+  Button,
   Divider,
   Heading,
+  HStack,
   Image,
   Link,
   Stack,
-  Text
+  Text,
+  useColorMode
 } from '@chakra-ui/react';
 import Tilt from 'react-parallax-tilt';
 
@@ -72,27 +76,36 @@ function Card(props: CardProps) {
 }
 
 export default function Splash() {
+  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
     <Box
       backgroundSize="cover"
       backgroundPosition="center"
-      height="100%"
-      width="100%"
+      height="full"
+      width="full"
     >
-      <Heading
-        as="h1"
-        size="2xl"
-        mt={6}
-        mb={4}
-        textAlign="center"
-        fontWeight={'light'}
-      >
-        Talk to History.
-      </Heading>
-      <Text textAlign="center" fontFamily={'montserrat'}>
-        Learn history, one conversation at a time.
-      </Text>
-      <Divider orientation="horizontal" margin="20px" />
+      <HStack justify="space-between" align="start" p={6}>
+        <Box />
+        <Box>
+          <Heading
+            as="h1"
+            size="2xl"
+            pb={4}
+            textAlign="center"
+            fontWeight={'light'}
+          >
+            Talk to History.
+          </Heading>
+          <Text textAlign="center" fontFamily={'montserrat'}>
+            Learn history, one conversation at a time.
+          </Text>
+        </Box>
+        <Button aria-label="Toggle color mode" onClick={toggleColorMode}>
+          {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+        </Button>
+      </HStack>
+      <Divider orientation="horizontal" mb={5} />
 
       <Stack
         direction={{ base: 'column', md: 'row' }}
@@ -111,7 +124,7 @@ export default function Splash() {
         />
         <Card
           figure="Katherine Johnson"
-          img="images/katherineJohnson/katherineJohnsonStatic.gif"
+          img="images/katherineJohnson/profile.gif"
           link="/articles/katherineJohnson"
         />
         <Card
