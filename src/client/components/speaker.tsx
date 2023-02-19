@@ -96,7 +96,22 @@ export function Speaker({
           resolve();
           return;
         }
+        const interval = setInterval(() => {
+          if (!audioRef.current) {
+            ttsQueue.current = [];
+            audioQueue.current = [];
+          }
+          if (!audioRef.current || audioRef.current.ended) {
+            clearInterval(interval);
+            resolve();
+          }
+        }, 1000);
         audioRef.current.onended = () => resolve();
+        audioRef.current.onerror = (error) => {
+          console.error(error);
+          clearInterval(interval);
+          resolve();
+        };
       });
     }
     audioIsRunning.current = false;
@@ -182,7 +197,7 @@ export function Speaker({
   }, [scrollable, conversation]);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen || conversation.length > 0) return;
     send();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
