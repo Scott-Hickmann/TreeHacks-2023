@@ -115,7 +115,7 @@ export default function Splash() {
         <Card
           figure="Sun Tzu"
           img="images/sunTzu/profile.gif"
-          link="/articles/sunTzu.mdx"
+          link="/articles/sunTzu"
         />
         <Card
           figure="Rachel Carson"
