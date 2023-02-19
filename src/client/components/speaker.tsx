@@ -184,7 +184,7 @@ export function Speaker({
           resolve();
         };
         videoRef.current.onerror = (error) => {
-          console.error(error);
+          console.log(error);
           clearInterval(interval);
           resolve();
         };
