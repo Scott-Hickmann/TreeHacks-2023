@@ -307,7 +307,12 @@ export function Speaker({
             <HStack justify="space-between" pr={8}>
               <Heading size="md">{name}</Heading>
               <HStack>
-                <Text fontSize="sm">Enable Lip Sync (Requires Waiting)</Text>
+                <Text fontSize="sm" display="inherit">
+                  Enable Lip Sync{' '}
+                  <Text as="span" display={{ base: 'none', md: 'inherit' }}>
+                    (Requires Waiting)
+                  </Text>
+                </Text>
                 <Switch
                   isDisabled={generating || playing}
                   isChecked={lipsEnabled}
