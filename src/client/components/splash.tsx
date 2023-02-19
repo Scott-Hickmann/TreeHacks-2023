@@ -46,6 +46,7 @@ function Card(props: CardProps) {
             alt={props.figure}
             contrast={1.75}
             objectFit={'cover'}
+            objectPosition={'50% 25%'}
             width={'100%'}
             height={'100%'}
           />
@@ -113,14 +114,14 @@ export default function Splash() {
         padding="5px"
       >
         <Card
-          figure="Sun Tzu"
-          img="images/sunTzu/profile.gif"
-          link="/articles/sunTzu"
-        />
-        <Card
           figure="Rachel Carson"
           img="images/rachelCarson/profile.gif"
           link="/articles/rachelCarson"
+        />
+        <Card
+          figure="Sun Tzu"
+          img="images/sunTzu/profile.gif"
+          link="/articles/sunTzu"
         />
         <Card
           figure="Katherine Johnson"

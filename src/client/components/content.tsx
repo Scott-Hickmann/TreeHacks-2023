@@ -94,7 +94,12 @@ const components: MDXComponents = {
       <Heading as="h1" size="2xl" {...commonHeadingProps}>
         <HStack align="center" justify="space-between">
           <Text>{children}</Text>
-          <Button onClick={onOpen} size="sm" variant="outline">
+          <Button
+            onClick={onOpen}
+            size="sm"
+            variant="outline"
+            display={{ base: 'none', md: 'initial' }}
+          >
             <Box> Talk with me</Box>
           </Button>
         </HStack>
@@ -169,15 +174,17 @@ const components: MDXComponents = {
         fontSize="sm"
         marginTop={{ base: 0, lg: 1.5 }}
       >
-        <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} perspective={1000}>
-          <Image
-            rounded="lg"
-            cursor="pointer"
-            src={src}
-            alt={alt}
-            onClick={onOpen}
-          />
-        </Tilt>
+        <Box alignSelf="center">
+          <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} perspective={1000}>
+            <Image
+              rounded="lg"
+              cursor="pointer"
+              src={src}
+              alt={alt}
+              onClick={onOpen}
+            />
+          </Tilt>
+        </Box>
         <Stack spacing={0}>
           <Box />
           {children}
