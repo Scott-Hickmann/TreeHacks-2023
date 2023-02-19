@@ -69,17 +69,12 @@ export function Speaker({
   const [isRunning, setIsRunning] = useState(false);
   const [conversation, setConversation] = useState<
     { user: string[]; bot: string[] }[]
-  >([
-    {
-      user: [],
-      bot: ['Say hi to start chatting with me!']
-    }
-  ]);
+  >([]);
   const [info, setInfo] = useState<Info>();
   const [input, setInput] = useState<string>('');
   const scrollable = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const ttsQueue = useRef<string[]>([...conversation[0].bot]);
+  const ttsQueue = useRef<string[]>([]);
   const audioQueue = useRef<string[]>([]);
 
   const ttsIsRunning = useRef(false);
@@ -188,7 +183,7 @@ export function Speaker({
 
   useEffect(() => {
     if (!isOpen) return;
-    tts();
+    send();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
