@@ -13,7 +13,7 @@ interface ArticlePageProps {
 
 export default function ArticlePage({ articleId, content }: ArticlePageProps) {
   return (
-    <Layout title="Home" description="Home">
+    <Layout title="Talk to History" description="Talk to History">
       <Box m={{ base: 6, md: 8 }}>
         <Content articleId={articleId} content={content} />
       </Box>
