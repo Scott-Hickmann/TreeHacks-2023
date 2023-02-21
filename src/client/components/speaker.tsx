@@ -312,12 +312,12 @@ export function Speaker({
                   <Text as="span" display={{ base: 'none', md: 'inherit' }}>
                     (Requires Waiting)
                   </Text>
-                </Text> */}
+                </Text>
                 <Switch
                   isDisabled={generating || playing}
                   isChecked={lipsEnabled}
                   onChange={() => setLipsEnabled((lipsEnabled) => !lipsEnabled)}
-                />
+                /> */}
               </HStack>
             </HStack>
             <Center>
