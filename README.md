@@ -1,8 +1,8 @@
 # Talk To History: Treehacks 2023
 
-> Talk to History: Step into your textbook. Read about history and then talk to the people in the passage, just like the magical portraits in Harry Potter.
-> Scott Hickmann, Kaien Yang, Jason Lin
-> Winner of Best Chat App (sponsored by you.com, $2k)
+> Step into your textbook. Read about history and then talk to the people in the passage, just like the magical portraits in Harry Potter.
+> 
+> Winner of Best Chat App (sponsored by you.com, $2k) 
 
 ## Inspiration
 
