@@ -81,63 +81,77 @@ export default function Splash() {
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
-    <Box
-      backgroundSize="cover"
-      backgroundPosition="center"
-      height="full"
-      width="full"
-    >
-      <HStack
-        justify="space-between"
-        align="start"
-        p={6}
-        bg={useColorModeValue('white', 'black')}
-        px={{ base: 6, md: 8 }}
-        borderBottomWidth={1}
-        borderBottomColor={useColorModeValue('gray.100', 'black')}
+    <Box>
+      <Box
+        backgroundSize="cover"
+        backgroundPosition="center"
+        height="full"
+        width="full"
       >
-        <Box />
-        <Box>
-          <Heading as="h1" size="2xl" pb={4} textAlign="center">
-            Talk to History.
-          </Heading>
-          <Text textAlign="center" fontFamily={'montserrat'}>
-            Learn history, one conversation at a time.
-          </Text>
-        </Box>
-        <Button aria-label="Toggle color mode" onClick={toggleColorMode}>
-          {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-        </Button>
-      </HStack>
+        <HStack
+          justify="space-between"
+          align="start"
+          p={6}
+          bg={useColorModeValue('white', 'black')}
+          px={{ base: 6, md: 8 }}
+          borderBottomWidth={1}
+          borderBottomColor={useColorModeValue('gray.100', 'black')}
+        >
+          <Box />
+          <Box>
+            <Heading as="h1" size="2xl" pb={4} textAlign="center">
+              Talk to History.
+            </Heading>
+            <Text textAlign="center" fontFamily={'montserrat'}>
+              Learn history, one conversation at a time.
+            </Text>
+          </Box>
+          <Button aria-label="Toggle color mode" onClick={toggleColorMode}>
+            {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+          </Button>
+        </HStack>
 
-      <Stack
-        direction={{ base: 'column', md: 'row' }}
-        justify="center"
-        padding="5px"
-        spacing={{ base: 2, md: 4 }}
-        m={{ base: 0, md: 5 }}
-      >
-        <Card
-          figure="Rachel Carson"
-          img="images/rachelCarson/profile.gif"
-          link="/articles/rachelCarson"
-        />
-        <Card
-          figure="Sun Tzu"
-          img="images/sunTzu/profile.gif"
-          link="/articles/sunTzu"
-        />
-        <Card
-          figure="Katherine Johnson"
-          img="images/katherineJohnson/profile.gif"
-          link="/articles/katherineJohnson"
-        />
-        <Card
-          figure="Gottfried Leibniz"
-          img="images/gottfriedLeibniz/profile.gif"
-          link="/articles/gottfriedLeibniz"
-        />
-      </Stack>
+        <Stack
+          direction={{ base: 'column', md: 'row' }}
+          justify="center"
+          padding="5px"
+          spacing={{ base: 2, md: 4 }}
+          m={{ base: 0, md: 5 }}
+        >
+          <Card
+            figure="Rachel Carson"
+            img="images/rachelCarson/profile.gif"
+            link="/articles/rachelCarson"
+          />
+          <Card
+            figure="Sun Tzu"
+            img="images/sunTzu/profile.gif"
+            link="/articles/sunTzu"
+          />
+          <Card
+            figure="Katherine Johnson"
+            img="images/katherineJohnson/profile.gif"
+            link="/articles/katherineJohnson"
+          />
+          <Card
+            figure="Gottfried Leibniz"
+            img="images/gottfriedLeibniz/profile.gif"
+            link="/articles/gottfriedLeibniz"
+          />
+        </Stack>
+      </Box>
+      <Box position="fixed" bottom="0" left="0" right="0" height="50px">
+        <Text textAlign="center" fontFamily={'montserrat'} color="gray.300">
+          Made by Scott, Kaien, Jason. See writeup{' '}
+          <Link
+            href="https://devpost.com/software/living-history"
+            textDecoration="underline"
+          >
+            here
+          </Link>
+          .
+        </Text>
+      </Box>
     </Box>
   );
 }
